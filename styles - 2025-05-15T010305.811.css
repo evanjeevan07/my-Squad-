@@ -1,0 +1,158 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none; /* Disable text selection during drag */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  -khtml-user-select: none;
+  -webkit-touch-callout: none; /* Disable callout on touch hold */
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+}
+
+body {
+  overflow: hidden; /* Prevent body scrolling */
+  color: #333; /* Default body text color for white background */
+  font-family: 'Bebas Neue', sans-serif;
+  background-color: #ffffff; /* White body background */
+}
+
+.slider {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background-color: #ffffff; /* Ensure slider background is also white */
+}
+
+.slides {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 1s ease-in-out; /* 1 second slide transition */
+  cursor: grab; /* Indicate draggable area */
+}
+
+/* Add class for dragging state */
+.slides.dragging {
+    cursor: grabbing;
+    transition: none !important; /* Disable transition while dragging */
+}
+
+.slide {
+  /* Each slide occupies the full viewport space */
+  min-width: 100vw;
+  height: 100vh;
+  background-color: #ffffff; /* White background for each slide */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center .slide-content horizontally */
+  justify-content: center; /* Center .slide-content vertically */
+  text-align: center;
+  position: relative;
+}
+
+/* Container for the visual content (image + text overlay) with 3:4 ratio */
+.slide-content {
+    position: relative; /* Needed for absolute children (image, link, text) */
+    width: 80vw; /* Start with 80% of viewport width */
+    max-width: 350px; /* Max width */
+    height: auto; /* Height determined by aspect ratio */
+    aspect-ratio: 3 / 4; /* Maintain 3:4 aspect ratio (width / height) */
+    overflow: hidden; /* Hide parts of image outside the ratio */
+    border-radius: 15px; /* Rounded corners */
+    /* Removed flex/padding/background-color/box-shadow */
+    background-color: rgba(0, 0, 0, 0.05); /* Very slight gray background for the content block */
+    box-shadow: none; /* Removed box-shadow */
+}
+
+
+.slide-content a {
+    display: block;
+    /* Position link container to cover the image area */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* Adjusted height to cover only the image area - leaving space for text */
+    height: calc(100% - 50px); /* Height for image area (adjust if text area changes) */
+    z-index: 10; /* Link behind text */
+    cursor: pointer;
+}
+
+.slide-content img {
+  width: 100%; /* Image fills its positioned area */
+  height: 100%; /* Image fills its positioned area */
+  object-fit: cover; /* Cover the link container area */
+  position: absolute;
+  top: 0; left: 0;
+  z-index: 5; /* Image behind text */
+}
+
+/* Style for the text overlay (positioned at the bottom of .slide-content) */
+.slide-content h2 {
+    position: absolute; /* Position Name absolutely */
+    bottom: 25px; /* Position above the role text */
+    left: 0;
+    right: 0;
+    z-index: 20; /* Text highest */
+    color: #333; /* Darker text color for white background */
+    text-shadow: none; /* Removed text shadow */
+    font-size: 1.1em; /* Small text size */
+    font-family: 'Abril Fatface', cursive;
+    text-align: center; /* Ensure text is centered */
+    /* Removed background color and padding */
+}
+
+.slide-content p {
+    position: absolute; /* Position Role absolutely */
+    bottom: 10px; /* Position near the bottom edge */
+    left: 0;
+    right: 0;
+    z-index: 20; /* Text highest */
+    color: #555; /* Slightly lighter color for role */
+    text-shadow: none; /* Removed text shadow */
+    font-size: 0.8em; /* Small text size */
+    font-family: 'Bebas Neue', sans-serif;
+    margin: 0; /* Remove default margin */
+    text-align: center; /* Ensure text is centered */
+}
+
+
+/* Removed Navigation Button Styles */
+.prev-btn,
+.next-btn {
+    display: none;
+}
+
+
+/* Dot Navigation Styles (Keep small and close) */
+.dot-navigation {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    gap: 6px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0.3); /* Darker dots for white background */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.dot.active {
+    background-color: #333; /* Darker active dot */
+    transform: scale(1.2);
+}
+
+.dot:hover:not(.active) {
+    background-color: rgba(0, 0, 0, 0.5); /* More visible on hover */
+}
